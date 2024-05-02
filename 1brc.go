@@ -13,12 +13,13 @@ import (
 )
 
 const fileName = "weather.csv"
-const mapSize = 1 << 30
+const mapSize = 1 << 16
 
 // Weather represents the data for a specific station
 type Weather struct {
 	Min   float64
 	Max   float64
+	Avg   float64
 	Sum   float64
 	Count int
 }
@@ -148,6 +149,7 @@ func processChunk(
 					Count: 1,
 					Min:   temp,
 					Max:   temp,
+					Avg:   temp,
 				},
 			)
 
@@ -155,6 +157,7 @@ func processChunk(
 			if ok {
 				w.Sum += temp
 				w.Count++
+				w.Avg = w.Sum / float64(w.Count)
 				w.Min = min(w.Min, temp)
 				w.Max = max(w.Max, temp)
 
