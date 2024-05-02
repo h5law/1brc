@@ -85,7 +85,7 @@ func splitChunks(mp *mmap.MMap, n int) []Chunk {
 		// Search for a newline at the end of the chunk size with some delta
 		j := chunkSize*i + 50
 		for (*mp)[j] != '\n' {
-			j -= 1
+			j--
 		}
 		// Set the end and start points of the previous and next chunk
 		chunks[i-1].End = j
@@ -121,7 +121,7 @@ func processChunk(
 		// Ignore commented first lines
 		if (*mp)[i] == '#' {
 			for (*mp)[i] != '\n' {
-				i += 1
+				i++
 			}
 			prev = i + 1
 		}
@@ -129,10 +129,10 @@ func processChunk(
 		// Get the station name
 		if (*mp)[i] == ';' {
 			stationName.WriteString(string((*mp)[prev:i]))
-			i += 1
+			i++
 			tempStartIdx := i
 			for (*mp)[i] != '\n' {
-				i += 1
+				i++
 			}
 			t, err := strconv.ParseFloat(string((*mp)[tempStartIdx:i]), 64)
 			if err != nil {
